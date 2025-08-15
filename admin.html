@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone Gym – Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ===== ADMIN HEADER ===== -->
+<header class="admin-header">
+    <div class="container">
+        <h1>FitZone Admin Panel</h1>
+    </div>
+</header>
+
+<!-- ===== DATA TABLE SECTION ===== -->
+<section class="admin-table-section">
+    <div class="container">
+        <h2>Membership Requests</h2>
+        <table id="adminTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="admin-footer">
+    <div class="container">
+        <p>&copy; 2025 FitZone Gym – Admin Panel</p>
+    </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+const GOOGLE_SHEET_JSON_URL = "https://script.google.com/macros/s/AKfycbxBCh6DPCRI6WzpUv5X62okz1GzP0zwTtwv4xNHslnBkwogOMaVPDC6AF9OEDc1oyKU/exec";
+
+// Fetch and display data from Google Sheets
+async function loadAdminData() {
+    try {
+        const response = await fetch(GOOGLE_SHEET_JSON_URL);
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#adminTable tbody");
+        tableBody.innerHTML = "";
+
+        data.forEach(entry => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${entry.name || ""}</td>
+                <td>${entry.email || ""}</td>
+                <td>${entry.phone || ""}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("Error loading data:", error);
+        alert("Failed to load data. Please check the connection or sheet link.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadAdminData);
+</script>
+
+</body>
+</html>
